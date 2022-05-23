@@ -9,10 +9,10 @@ public class TestDao {
 	public static void main(String[] args) {
 
 		GenesDao dao = new GenesDao();
-		List<Genes> list = dao.getAllGenes();
+		List<Integer> list = dao.getVertex();
 
-		for (Genes g : list) {
-			System.out.format("%-10s %-20s %1d\n", g.getGeneId(), g.getEssential(), g.getChromosome() );
+		for (Integer g : list) {
+			System.out.println(g);;
 		}
 		
 	}

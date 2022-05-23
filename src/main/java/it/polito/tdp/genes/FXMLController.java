@@ -1,7 +1,3 @@
-/**
- * Sample Skeleton for 'Scene.fxml' Controller Class
- */
-
 package it.polito.tdp.genes;
 
 import java.net.URL;
@@ -15,48 +11,67 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class FXMLController {
-	
-	private Model model ;
+	Model model;
+	@FXML
+	private ResourceBundle resources;
 
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
+	@FXML
+	private URL location;
 
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
+	@FXML
+	private Button btnContaArchi;
 
-    @FXML // fx:id="btnContaArchi"
-    private Button btnContaArchi; // Value injected by FXMLLoader
+	@FXML
+	private Button btnRicerca;
 
-    @FXML // fx:id="btnRicerca"
-    private Button btnRicerca; // Value injected by FXMLLoader
+	@FXML
+	private TextArea txtResult;
 
-    @FXML // fx:id="txtSoglia"
-    private TextField txtSoglia; // Value injected by FXMLLoader
+	@FXML
+	private TextField txtSoglia;
 
-    @FXML // fx:id="txtResult"
-    private TextArea txtResult; // Value injected by FXMLLoader
+	@FXML
+	void doContaArchi(ActionEvent event) {
 
-    @FXML
-    void doContaArchi(ActionEvent event) {
+		Double num = 0.0;
+		try {
+			num = Double.parseDouble(txtSoglia.getText());
+		} catch (NumberFormatException n) {
+			throw new NumberFormatException();
+		}
+		if (num < model.getPesoBasso()) {
+			txtResult.appendText("Peso inserito troppo basso \n");
+			return;
+		}
+		if (num > model.getPesoAlto()) {
+			txtResult.appendText("Peso inserito troppo alto \n");
+			return;
+		}
+		model.check(num);
+		txtResult.appendText("Soglia " + num + " -->");
+		txtResult.appendText("Maggiori: " + model.getNumP());
+		txtResult.appendText(", Minori: " + model.getNumM() + "\n");
+	}
 
-    }
+	@FXML
+	void doRicerca(ActionEvent event) {
 
-    @FXML
-    void doRicerca(ActionEvent event) {
+	}
 
-    }
+	@FXML
+	void initialize() {
+		assert btnContaArchi != null : "fx:id=\"btnContaArchi\" was not injected: check your FXML file 'Scene.fxml'.";
+		assert btnRicerca != null : "fx:id=\"btnRicerca\" was not injected: check your FXML file 'Scene.fxml'.";
+		assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
+		assert txtSoglia != null : "fx:id=\"txtSoglia\" was not injected: check your FXML file 'Scene.fxml'.";
 
-    @FXML // This method is called by the FXMLLoader when initialization is complete
-    void initialize() {
-        assert btnContaArchi != null : "fx:id=\"btnContaArchi\" was not injected: check your FXML file 'Scene.fxml'.";
-        assert btnRicerca != null : "fx:id=\"btnRicerca\" was not injected: check your FXML file 'Scene.fxml'.";
-        assert txtSoglia != null : "fx:id=\"txtSoglia\" was not injected: check your FXML file 'Scene.fxml'.";
-        assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
-
-    }
+	}
 
 	public void setModel(Model model) {
-		this.model = model ;
-		
+		this.model = model;
+		model.creaGrafo();
+		txtResult.setText("Grafo creato \n");
+		txtResult.appendText("Peso minimo: " + model.getPesoBasso() + "\n");
+		txtResult.appendText("Peso massimo: " + model.getPesoAlto() + "\n");
 	}
 }
